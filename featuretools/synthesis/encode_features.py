@@ -127,8 +127,7 @@ def encode_features(
                 logger.warning(
                     "Feature %s has multiple columns and will not "
                     "be encoded.  This may result in a matrix with"
-                    " non-numeric values." % (f),
-                )
+                    " non-numeric values.", (f))
             new_feature_list.append(f)
             kept_columns.extend(f.get_feature_names())
             continue

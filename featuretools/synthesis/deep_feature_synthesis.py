@@ -575,8 +575,7 @@ class DeepFeatureSynthesis(object):
         ):
             logger.warning(
                 "Attempting to add feature %s which is already "
-                "present. This is likely a bug." % new_feature,
-            )
+                "present. This is likely a bug.", new_feature)
             return
 
         all_features[dataframe_name][name] = new_feature
