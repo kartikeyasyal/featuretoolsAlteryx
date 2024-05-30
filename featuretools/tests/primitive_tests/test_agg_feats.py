@@ -36,6 +36,7 @@ from featuretools.primitives.base import AggregationPrimitive
 from featuretools.synthesis.deep_feature_synthesis import DeepFeatureSynthesis, match
 from featuretools.tests.testing_utils import backward_path, feature_with_name, to_pandas
 from featuretools.utils.gen_utils import Library
+import math
 
 
 @pytest.fixture(autouse=True)
@@ -152,9 +153,9 @@ def test_mean_nan(es):
     assert mean_func_nans_false(array) == 5
     assert mean_func_nans_true(array) == 5
     array = pd.Series([5, np.nan, np.nan, np.nan, np.nan, 10])
-    assert mean_func_nans_default(array) == 7.5
+    assert math.isclose(mean_func_nans_default(array), 7.5, rel_tol=1e-09, abs_tol=0.0)
     assert isnan(mean_func_nans_false(array))
-    assert mean_func_nans_true(array) == 7.5
+    assert math.isclose(mean_func_nans_true(array), 7.5, rel_tol=1e-09, abs_tol=0.0)
     array_nans = pd.Series([np.nan, np.nan, np.nan, np.nan])
     assert isnan(mean_func_nans_default(array_nans))
     assert isnan(mean_func_nans_false(array_nans))

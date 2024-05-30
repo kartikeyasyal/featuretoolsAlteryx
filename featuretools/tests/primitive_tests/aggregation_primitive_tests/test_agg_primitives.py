@@ -42,6 +42,7 @@ from featuretools.tests.primitive_tests.utils import (
     find_applicable_primitives,
     valid_dfs,
 )
+import math
 
 
 def test_nmostcommon_categorical():
@@ -82,7 +83,7 @@ def test_trend_works_with_different_input_dtypes():
 def test_percent_true_boolean():
     booleans = pd.Series([True, False, True, pd.NA], dtype="boolean")
     pct_true = PercentTrue()
-    pct_true(booleans) == 0.5
+    math.isclose(pct_true(booleans), 0.5, rel_tol=1e-09, abs_tol=0.0)
 
 
 class TestAverageCountPerUnique(PrimitiveTestBase):
@@ -91,20 +92,20 @@ class TestAverageCountPerUnique(PrimitiveTestBase):
 
     def test_percent_unique(self):
         primitive_func = AverageCountPerUnique().get_function()
-        assert primitive_func(self.array) == 1.25
+        assert math.isclose(primitive_func(self.array), 1.25, rel_tol=1e-09, abs_tol=0.0)
 
     def test_nans(self):
         primitive_func = AverageCountPerUnique().get_function()
         array_nans = pd.concat([self.array.copy(), pd.Series([np.nan])])
-        assert primitive_func(array_nans) == 1.25
+        assert math.isclose(primitive_func(array_nans), 1.25, rel_tol=1e-09, abs_tol=0.0)
         primitive_func = AverageCountPerUnique(skipna=False).get_function()
         array_nans = pd.concat([self.array.copy(), pd.Series([np.nan])])
-        assert primitive_func(array_nans) == (11 / 9.0)
+        assert math.isclose(primitive_func(array_nans), (11 / 9.0), rel_tol=1e-09, abs_tol=0.0)
 
     def test_empty_string(self):
         primitive_func = AverageCountPerUnique().get_function()
         array_empty_string = pd.concat([self.array.copy(), pd.Series([np.nan, "", ""])])
-        assert primitive_func(array_empty_string) == (4 / 3.0)
+        assert math.isclose(primitive_func(array_empty_string), (4 / 3.0), rel_tol=1e-09, abs_tol=0.0)
 
     def test_with_featuretools(self, es):
         transform, aggregation = find_applicable_primitives(self.primitive)
@@ -190,7 +191,7 @@ class TestEntropy(PrimitiveTestBase):
         data = pd.Series([], dtype=dtype)
         primitive_func = self.primitive().get_function()
         given_answer = primitive_func(data)
-        assert given_answer == 0.0
+        assert math.isclose(given_answer, 0.0, rel_tol=1e-09, abs_tol=0.0)
 
     @pytest.mark.parametrize(
         "dtype",
@@ -760,12 +761,12 @@ class TestMaxMinDelta(PrimitiveTestBase):
 
     def test_max_min_delta(self):
         primitive_func = self.primitive().get_function()
-        assert primitive_func(self.array) == 7.0
+        assert math.isclose(primitive_func(self.array), 7.0, rel_tol=1e-09, abs_tol=0.0)
 
     def test_nans(self):
         primitive_func = self.primitive().get_function()
         array_nans = pd.concat([self.array, pd.Series([np.nan])])
-        assert primitive_func(array_nans) == 7.0
+        assert math.isclose(primitive_func(array_nans), 7.0, rel_tol=1e-09, abs_tol=0.0)
         primitive_func = self.primitive(skipna=False).get_function()
         array_nans = pd.concat([self.array, pd.Series([np.nan])])
         assert pd.isna(primitive_func(array_nans))

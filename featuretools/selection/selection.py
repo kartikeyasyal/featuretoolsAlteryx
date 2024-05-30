@@ -1,5 +1,6 @@
 import pandas as pd
 from woodwork.logical_types import Boolean, BooleanNullable
+import math
 
 
 def remove_low_information_features(feature_matrix, features=None):
@@ -51,7 +52,7 @@ def remove_highly_null_features(feature_matrix, features=None, pct_null_threshol
 
     percent_null_by_col = (feature_matrix.isnull().mean()).to_dict()
 
-    if pct_null_threshold == 0.0:
+    if math.isclose(pct_null_threshold, 0.0, rel_tol=1e-09, abs_tol=0.0):
         keep = [
             f_name
             for f_name, pct_null in percent_null_by_col.items()

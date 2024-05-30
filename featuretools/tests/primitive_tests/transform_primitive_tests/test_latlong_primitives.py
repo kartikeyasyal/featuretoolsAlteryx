@@ -3,6 +3,7 @@ import pandas as pd
 import pytest
 
 from featuretools.primitives import CityblockDistance, GeoMidpoint, IsInGeoBox
+import math
 
 
 def test_cityblock():
@@ -42,8 +43,8 @@ def test_midpoint():
     function = GeoMidpoint().get_function()
     answer = function(latlong1, latlong2)
     for lat, longi in answer:
-        assert lat == 0.0
-        assert longi == 0.0
+        assert math.isclose(lat, 0.0, rel_tol=1e-09, abs_tol=0.0)
+        assert math.isclose(longi, 0.0, rel_tol=1e-09, abs_tol=0.0)
 
 
 def test_midpoint_floating():
@@ -52,8 +53,8 @@ def test_midpoint_floating():
     function = GeoMidpoint().get_function()
     answer = function(latlong1, latlong2)
     for lat, longi in answer:
-        assert lat == 0.0
-        assert longi == 0.0
+        assert math.isclose(lat, 0.0, rel_tol=1e-09, abs_tol=0.0)
+        assert math.isclose(longi, 0.0, rel_tol=1e-09, abs_tol=0.0)
 
 
 def test_midpoint_zeros():
@@ -62,8 +63,8 @@ def test_midpoint_zeros():
     function = GeoMidpoint().get_function()
     answer = function(latlong1, latlong2)
     for lat, longi in answer:
-        assert lat == 0.0
-        assert longi == 0.0
+        assert math.isclose(lat, 0.0, rel_tol=1e-09, abs_tol=0.0)
+        assert math.isclose(longi, 0.0, rel_tol=1e-09, abs_tol=0.0)
 
 
 def test_midpoint_nan():

@@ -63,6 +63,7 @@ from featuretools.tests.testing_utils import (
     to_pandas,
 )
 from featuretools.utils.gen_utils import Library, import_or_none
+import math
 
 dd = import_or_none("dask.dataframe")
 
@@ -2109,7 +2110,7 @@ def test_handle_chunk_size():
     assert _handle_chunk_size(None, total_size) is None
 
     # user provides fractional size
-    assert _handle_chunk_size(0.1, total_size) == total_size * 0.1
+    assert math.isclose(_handle_chunk_size(0.1, total_size), total_size * 0.1, rel_tol=1e-09, abs_tol=0.0)
     assert _handle_chunk_size(0.001, total_size) == 1  # rounds up
     assert _handle_chunk_size(0.345, total_size) == 35  # rounds up
 

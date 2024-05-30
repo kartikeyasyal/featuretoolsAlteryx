@@ -6,6 +6,7 @@ from pytest import raises
 
 from featuretools.primitives import Haversine, IsIn, IsNull, Max, TimeSinceLast
 from featuretools.primitives.base import TransformPrimitive
+import math
 
 
 def test_call_agg():
@@ -28,8 +29,8 @@ def test_uses_calc_time():
     datetimes = pd.Series([datetime(2015, 6, 6), datetime(2015, 6, 7)])
     answer = 86400.0
     answer_h = 24.0
-    assert answer == primitive(datetimes, time=datetime(2015, 6, 8))
-    assert answer_h == primitive_h(datetimes, time=datetime(2015, 6, 8))
+    assert math.isclose(answer, primitive(datetimes, time=datetime(2015, 6, 8)), rel_tol=1e-09, abs_tol=0.0)
+    assert math.isclose(answer_h, primitive_h(datetimes, time=datetime(2015, 6, 8)), rel_tol=1e-09, abs_tol=0.0)
 
 
 def test_call_multiple_args():

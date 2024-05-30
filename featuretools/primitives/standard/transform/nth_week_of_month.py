@@ -4,6 +4,7 @@ from woodwork.column_schema import ColumnSchema
 from woodwork.logical_types import Datetime, Double
 
 from featuretools.primitives.base import TransformPrimitive
+import math
 
 
 class NthWeekOfMonth(TransformPrimitive):
@@ -37,7 +38,7 @@ class NthWeekOfMonth(TransformPrimitive):
             df["dom"] = df.date.dt.day
             df["first_day_weekday"] = df.first_day.dt.weekday
             df["adjusted_dom"] = df.dom + df.first_day_weekday + 1
-            df.loc[df["first_day_weekday"].astype(float) == 6.0, "adjusted_dom"] = df[
+            df.loc[math.isclose(df["first_day_weekday"].astype(float), 6.0, rel_tol=1e-09, abs_tol=0.0), "adjusted_dom"] = df[
                 "dom"
             ]
             df["week_of_month"] = np.ceil(df.adjusted_dom / 7.0)

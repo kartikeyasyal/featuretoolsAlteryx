@@ -87,6 +87,7 @@ from featuretools.synthesis.deep_feature_synthesis import match
 from featuretools.tests.testing_utils import to_pandas
 from featuretools.utils.gen_utils import Library, import_or_none
 from featuretools.utils.spark_utils import pd_to_spark_clean
+import math
 
 dd = import_or_none("dask.dataframe")
 
@@ -441,7 +442,7 @@ def test_diff_single_value(pd_es):
     feature_set = FeatureSet([diff])
     calculator = FeatureSetCalculator(pd_es, feature_set=feature_set)
     df = calculator.run(np.array([4]))
-    assert df[diff.get_name()][4] == 6000.0
+    assert math.isclose(df[diff.get_name()][4], 6000.0, rel_tol=1e-09, abs_tol=0.0)
 
 
 def test_diff_reordered(pd_es):
@@ -638,7 +639,7 @@ def test_compare_all_nans(es):
             parent_dataframe_name="sessions",
             primitive=Min,
         )
-        compare = nan_feat == 0.0
+        compare = math.isclose(nan_feat, 0.0, rel_tol=1e-09, abs_tol=0.0)
     else:
         nan_feat = Feature(
             es["log"].ww["product_id"],
@@ -1431,7 +1432,7 @@ def test_percentile_with_cutoff(pd_es):
         pd.Timestamp("2011/04/09 10:30:13"),
     )
     df = calculator.run(np.array([2]))
-    assert df[p.get_name()].tolist()[0] == 1.0
+    assert math.isclose(df[p.get_name()].tolist()[0], 1.0, rel_tol=1e-09, abs_tol=0.0)
 
 
 def test_two_kinds_of_dependents(pd_es):

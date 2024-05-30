@@ -5,6 +5,7 @@ from featuretools.primitives import PercentUnique
 from featuretools.tests.primitive_tests.utils import (
     PrimitiveTestBase,
 )
+import math
 
 
 class TestPercentUnique(PrimitiveTestBase):
@@ -13,23 +14,23 @@ class TestPercentUnique(PrimitiveTestBase):
 
     def test_percent_unique(self):
         primitive_func = self.primitive().get_function()
-        assert primitive_func(self.array) == (8 / 10.0)
+        assert math.isclose(primitive_func(self.array), (8 / 10.0), rel_tol=1e-09, abs_tol=0.0)
 
     def test_nans(self):
         primitive_func = self.primitive().get_function()
         array_nans = pd.concat([self.array.copy(), pd.Series([np.nan])])
-        assert primitive_func(array_nans) == (8 / 11.0)
+        assert math.isclose(primitive_func(array_nans), (8 / 11.0), rel_tol=1e-09, abs_tol=0.0)
         primitive_func = self.primitive(skipna=False).get_function()
-        assert primitive_func(array_nans) == (9 / 11.0)
+        assert math.isclose(primitive_func(array_nans), (9 / 11.0), rel_tol=1e-09, abs_tol=0.0)
 
     def test_multiple_nans(self):
         primitive_func = self.primitive().get_function()
         array_nans = pd.concat([self.array.copy(), pd.Series([np.nan] * 3)])
-        assert primitive_func(array_nans) == (8 / 13.0)
+        assert math.isclose(primitive_func(array_nans), (8 / 13.0), rel_tol=1e-09, abs_tol=0.0)
         primitive_func = self.primitive(skipna=False).get_function()
-        assert primitive_func(array_nans) == (9 / 13.0)
+        assert math.isclose(primitive_func(array_nans), (9 / 13.0), rel_tol=1e-09, abs_tol=0.0)
 
     def test_empty_string(self):
         primitive_func = self.primitive().get_function()
         array_empty_string = pd.concat([self.array.copy(), pd.Series([np.nan, "", ""])])
-        assert primitive_func(array_empty_string) == (9 / 13.0)
+        assert math.isclose(primitive_func(array_empty_string), (9 / 13.0), rel_tol=1e-09, abs_tol=0.0)

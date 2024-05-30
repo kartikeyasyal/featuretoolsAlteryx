@@ -44,6 +44,7 @@ from featuretools.primitives.standard.aggregation.num_unique import NumUnique
 from featuretools.tests.testing_utils import backward_path, to_pandas
 from featuretools.utils import Trie
 from featuretools.utils.gen_utils import Library, import_or_none, is_instance
+import math
 
 dd = import_or_none("dask.dataframe")
 
@@ -666,7 +667,7 @@ def test_make_deep_agg_feat_of_dfeat_of_agg_feat(es):
     df = calculator.run(np.array([0]))
     df = to_pandas(df, index="id")
     v = df[purchase_popularity.get_name()].values[0]
-    assert v == 38.0 / 10.0
+    assert math.isclose(v, 38.0 / 10.0, rel_tol=1e-09, abs_tol=0.0)
 
 
 def test_deep_agg_feat_chain(es):
@@ -692,7 +693,7 @@ def test_deep_agg_feat_chain(es):
     df = to_pandas(df, index="id")
 
     v = df[region_avg_feat.get_name()][0]
-    assert v == 17 / 3.0
+    assert math.isclose(v, 17 / 3.0, rel_tol=1e-09, abs_tol=0.0)
 
 
 # NMostCommon not supported with Dask or Spark
@@ -1316,4 +1317,4 @@ def test_nunique_nested_with_agg_bug(pd_es):
     df = calculator.run(np.array([0]))
     df = to_pandas(df, index="id")
 
-    assert df.iloc[0, 0].round(4) == 1.6667
+    assert math.isclose(df.iloc[0, 0].round(4), 1.6667, rel_tol=1e-09, abs_tol=0.0)
