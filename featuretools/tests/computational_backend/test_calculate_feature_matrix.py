@@ -4,7 +4,6 @@ import re
 import shutil
 from datetime import datetime
 from itertools import combinations
-from random import randint
 
 import numpy as np
 import pandas as pd
@@ -63,6 +62,7 @@ from featuretools.tests.testing_utils import (
     to_pandas,
 )
 from featuretools.utils.gen_utils import Library, import_or_none
+import secrets
 
 dd = import_or_none("dask.dataframe")
 
@@ -254,8 +254,8 @@ def test_cfm_approximate_correct_ordering():
         "trip_id": [i for i in range(1000)],
         "flight_time": [datetime(1998, 4, 2) for i in range(350)]
         + [datetime(1997, 4, 3) for i in range(650)],
-        "flight_id": [randint(1, 25) for i in range(1000)],
-        "trip_duration": [randint(1, 999) for i in range(1000)],
+        "flight_id": [secrets.SystemRandom().randint(1, 25) for i in range(1000)],
+        "trip_duration": [secrets.SystemRandom().randint(1, 999) for i in range(1000)],
     }
     df = pd.DataFrame.from_dict(trips)
     es = EntitySet("flights")
