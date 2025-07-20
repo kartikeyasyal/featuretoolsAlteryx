@@ -1,10 +1,10 @@
-import random
 from datetime import datetime as dt
 
 import pandas as pd
 import pytest
 import woodwork.type_sys.type_system as ww_type_system
 from woodwork import logical_types
+import secrets
 
 logical_type_mapping = {
     logical_types.Boolean.__name__: [True, False],
@@ -45,9 +45,9 @@ def generate_fake_dataframe(
     dask.config.set({"dataframe.convert-string": False})
 
     def randomize(values_):
-        random.seed(10)
+        secrets.SystemRandom().seed(10)
         values = values_.copy()
-        random.shuffle(values)
+        secrets.SystemRandom().shuffle(values)
         return values
 
     def gen_series(values):
