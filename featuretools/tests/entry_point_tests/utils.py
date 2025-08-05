@@ -1,6 +1,7 @@
 import os
 import subprocess
 import sys
+from security import safe_command
 
 
 def _get_path_to_add_ons(*args):
@@ -10,7 +11,7 @@ def _get_path_to_add_ons(*args):
 
 def _python(*args):
     command = [sys.executable, *args]
-    return subprocess.run(command, stdout=subprocess.PIPE)
+    return safe_command.run(subprocess.run, command, stdout=subprocess.PIPE)
 
 
 def _install_featuretools_plugin():
